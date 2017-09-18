@@ -1,0 +1,59 @@
+---
+title: "Gapminder"
+author: "Yuanji Sun"
+date: "September 17, 2017"
+output: 
+  github_document
+---
+### Step 1. Install Packages (if not installed yet)
+```{r}
+# If the following packages are installed already, do NOT excute the following commands.
+# install.packages("gapminder")
+# install.packages("tidyverse")
+```
+
+### Step 2. Load Gapminder & Clear Workspace
+```{r}
+rm(list = ls())
+library(gapminder)
+library(tidyverse)
+```
+
+### Step 3. Obtain Basic Information
+```{r}
+gapminder
+head(gapminder)
+head(gapminder$lifeExp)
+tail(gapminder)
+str(gapminder)
+as_tibble(iris)
+summary(gapminder)
+summary(gapminder$lifeExp)
+glimpse(gapminder)
+names(gapminder)
+ncol(gapminder)
+length(gapminder)
+dim(gapminder)
+nrow(gapminder)
+```
+
+### Step 4. Basic Plot
+```{r, fig.width=7, fig.height=5}
+plot(lifeExp ~ year, gapminder)
+plot(lifeExp ~ gdpPercap, gapminder)
+plot(lifeExp ~ log(gdpPercap), gapminder)
+hist(gapminder$lifeExp)
+barplot(table(gapminder$continent))
+```
+
+### Step 5. Advanced Plot
+```{r, fig.width=7, fig.height=5}
+p <- ggplot(filter(gapminder, continent != "Oceania"),
+            aes(x = gdpPercap, y = lifeExp)) # just initializes
+p <- p + scale_x_log10() # log the x axis the right way
+p + geom_point() # scatterplot
+p + geom_point(aes(color = continent)) # map continent to color
+p + geom_point(alpha = (1/3), size = 3) + geom_smooth(lwd = 3, se = FALSE)
+p + geom_point(alpha = (1/3), size = 3) + facet_wrap(~ continent) +
+  geom_smooth(lwd = 1.5, se = FALSE)
+```
