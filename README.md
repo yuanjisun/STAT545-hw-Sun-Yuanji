@@ -1,10 +1,10 @@
 # _Yuanji_'s Homework 1 for **STAT 545A**
 
 ## Report Process
-1. All files in Homework 1 are pulled, edited locally, saved, committed from RStudio and finally pushed to github.com. I did **NOT** edit any files in the browser at github.com.
+1. All files in Homework 1 are pulled, edited locally, saved, committed from RStudio and finally pushed to github.com (I am quite familiar with this). I did **NOT** edit any files in the browser at github.com.
 2. [Link to the rendered .md for the Gapminder exploration](https://github.com/yuanjisun/STAT545-hw01-Sun-Yuanji/blob/master/hw01_gapminder.md)
 [Website: https://github.com/yuanjisun/STAT545-hw01-Sun-Yuanji/blob/master/hw01_gapminder.md]
-3. The R Markdown works properly just as expected.
+3. The R Markdown works properly just as expected. At the very beginning, I ran into an error when render the file. This is because I used "github_document" and "keep_md: yes" at the same time. After removing "keep_md: yes", the .md file was created automatically and everything went on very well.
 4. For the time, all tasks are quite straight forward and easy to be finished. I find that Use R! series by Springer and R for Data Science by O'Reilly are quite helpful for me in mastering R programming.
 
 
