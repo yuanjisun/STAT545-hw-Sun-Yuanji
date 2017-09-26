@@ -1,0 +1,285 @@
+---
+title: "Homework 02"
+author: "Yuanji Sun"
+date: "September 25, 2017"
+output: github_document
+---
+# STAT 545A Homework 02
+
+## Report progress
+1. This homework did not go smoothly and took a longer time for me to finish.
+
+2. Problems I ran into
+
+    - ggplot2() or ggplot(): I am confused about them. I used ggplot2 at the beginning and got error messages. When loading tidyverse, ggplot2 was also loaded, which made me more and more confused. Actually, ggplot2 is a library, which includes ggplot.
+    - Labels and titles: I tried to learn more by adding labels and titles for figures. Actually, the way to do this depends on which function you use (e.g. plot vs ggplot). I spent a long time working on this.
+    - By assigning a figure to a value, we can add additional "layers" to it and replacing it by adding a new layer. However, a much easier way to do this is add + again and again.
+    - After coding, the results were not displayed automatically. At the beginning, I added a line of code to print the results. But the easiest way to do this is put what needs to be printed in a ().
+    - As you can see below, I plotted a barplot with Canada and USA side by side. However, I did not figure this out for a long time. This is because I missed "group". Here, "group" doesn't refer to a function called "group". As you can see below, I used "fill" instead. This is because when filling the color according to countries, data will be grouped automatically.
+    - When using ggplot, dataset must be specified first. What should I do if I only have x and y? Here I piped the data and solved this problem in another way.
+    - After adding a title, it was not centered. This problem is now fixed by adding additional codes (see below).
+    - In the first figure in Part 5, the x-axis was wrong which displayed years ending with 0 and 5 instead of years like 1982 and 1987. This is because R took years as continuous number. In order to solve this problem, I turned years into factors and it worked.
+    - When writing this report, my number list doesn't work. This is because if I add bullets below a number list, the number next will be reset and start from 1. In order to solve this issue, I added a space before each bullet.
+    - I was also confused with class, type and data type. This problem is solved now.
+    - Using ggplot to make different figure type. I went through many materials and finally figured this out.
+    - The biggest difficulty I am having now is that I am not used to how R works. I am used to MATLAB and plot is easy. But R is different. It adds layers to the plots and combines them together. I still need more time to get used with this.
+
+3. Useful materials
+
+    - Google: Google knows almost everything
+    - R documentation, both online and within RStudio
+
+4. Conclusion
+
+I don't think this homework is difficult. The reason why I spent a long time on it is that I am still not familiar with R language. By doing this homework, I reviewed all knowledge discussed in class and tried more interesting things. I learned a lot from this homework.
+
+## Part 1. Bring rectangular data in
+Load the library
+```{r}
+library(gapminder)
+library(tidyverse)
+```
+
+## Part 2. Smell test the data
+__Question 1__: Is it a data.frame, a matrix, a vector, a list?
+
+Answer: It is both a list and data.frame.
+```{r}
+typeof(gapminder)
+is.list(gapminder)
+is.data.frame(gapminder)
+```
+
+__Question 2__: What’s its class?
+
+Answer: The class is data.frame.
+```{r}
+class(gapminder)
+```
+
+__Question 3__: How many variables/columns?
+
+Answer: There are 6 variables/columns.
+```{r}
+ncol(gapminder)
+```
+
+__Question 4__: How many rows/observations?
+
+Answer: There are 1704 rows/observations.
+```{r}
+nrow(gapminder)
+```
+
+__Question 5__: Can you get these facts about “extent” or “size” in more than one way? Can you imagine different functions being useful in different contexts?
+
+Answer: Of course, I can!
+
+I can know there are 6 variables using the following code, which will return the names of all variables.
+```{r}
+names(gapminder)
+```
+
+I can also konw the number of variables using the following code.
+```{r}
+length(gapminder)
+```
+
+I can use the following code"head"" to view the first 6 rows of the data, which will tell me what variables are included. Of course, using "tail" returns the last 6 rows, but I can still get variable names from it.
+```{r}
+head(gapminder)
+tail(gapminder)
+```
+
+I can even using the following code to preview the dataset, which will give me the variable names.
+```{r}
+str(gapminder)
+```
+
+It is a good idea to get the summary of the dataset, which will include variable names.
+```{r}
+summary(gapminder)
+```
+
+I can use the following code to get both row # and column #. The first output is row # and the second one is column #.
+```{r}
+dim(gapminder)
+```
+
+The code below will return all variables, row # and column # at the same time.
+```{r}
+glimpse(gapminder)
+```
+
+I think that's all. I am moving to the next question.
+
+__Question 6__: What data type is each variable?
+
+Answer:
+
+- country: factor
+- continent: factor
+- year: integer
+- lifeExp: double
+- pop: integer
+- gdpPercap: double
+```{r}
+glimpse(gapminder)
+```
+
+## Part 3. Explore individual variables
+__Question 1__: What are possible values (or range, whichever is appropriate) of each variable?
+
+Answer:
+
+Using the code below, I can get the value/range of each variable.
+
+- country: there are 142 countries in gapminder
+- continent: Africa, Americas, Asia, Europe, Oceania
+- year: range from 1952 to 2007
+- lifeExp: range from 23.60 to 82.60
+- pop: range from 6.001e+04 to 1.319e+09
+- gdpPercap: range from 241.2 to 113523.1
+```{r}
+summary(gapminder)
+# There are too many countries which are not shown in summary. Codes below solves this problem.
+(country_list <- unique(gapminder$country)) # Return a list of all countries
+(country_list2 <- table(gapminder$country)) # This is even a better way to get a list of all countries
+```
+
+__Question 2__: What values are typical? What’s the spread? What’s the distribution? Etc., tailored to the variable at hand.
+
+Answer: Here I selected continent and year to answer questions above.
+
+For continent, the typical value is Africa because it has much more countries than other continents. Africa has 624 countries (max) while oceania has only 24 countries (min). Thus, the spread is 600. (See the data and figure below.)
+```{r}
+summary(gapminder$continent)
+(q1 <- ggplot(gapminder, aes(x = continent)) +
+        geom_histogram(stat="count") +
+        labs(x="Continent", y="Counts"))
+```
+
+For year, the distribution is uniform because all years have the same amount of observations (thus there is no typical number). The spread of year is 55, because the min is 1952 and the max is 2007. (See the data and figure below.)
+```{r}
+summary(gapminder$year)
+(q2 <- ggplot(gapminder, aes(x = factor(year))) +
+        geom_histogram(stat="count") +
+        labs(x="Year", y="Counts"))
+```
+
+## Part 4. Explore various plot types
+__Question 1__: A scatterplot of two quantitative variables.
+
+Answer:
+A scatterplot of gdpPercap vs lifeExp.
+```{r}
+# Select x and y data. Set the size of year indicating years and the color representing cotinents. Set transparency. Add labels and a title.
+(p <- ggplot(gapminder, aes(x=gdpPercap, y=lifeExp)) +
+        geom_point(aes(size=year, color=continent),alpha = 0.25) +
+        labs(x="GPD per Capita", y="Life Expectation", title="Figure 1") +
+        # Center the title
+        theme(plot.title = element_text(hjust = 0.5)))
+```
+
+__Question 2__: A plot of one quantitative variable. Maybe a histogram or densityplot or frequency polygon.
+
+Answer:
+This figure shows the counts for each life expectation.
+```{r}
+(p1 <- ggplot(gapminder, aes(x = lifeExp)) +
+        geom_histogram() +
+        labs(x="Life Expectation", y="Counts", title="Figure 2")) +
+        theme(plot.title = element_text(hjust = 0.5))
+```
+
+__Question 3__: A plot of one quantitative variable and one categorical. Maybe boxplots for several continents or countries.
+
+Answer:
+Plot life expectation for each continent.
+```{r}
+(p10 <- ggplot(gapminder, aes(x = continent, y = lifeExp)) +
+        geom_boxplot() +
+        labs(x="Continent", y="Life Expectation", title="Figure 3") +
+        theme(plot.title = element_text(hjust = 0.5)))
+```
+
+__Additional Practice__
+
+Explore how gdpPercap changes over year in Canada.
+```{r}
+# Extract gdpPercap of Canada
+canada_gdpPercap = filter(gapminder, country=="Canada")$gdpPercap
+# Extract year of Canada
+canada_year = filter(gapminder, country=="Canada")$year
+# Plot gdpPercap vs year of Canada
+(p9 <- gapminder %>%
+                filter(country=="Canada") %>%
+                ggplot(aes(x = year, y = gdpPercap)) +
+                geom_point())
+# Alternatively, I can use the code below to plot the same figure.
+# (p8 <- ggplot(filter(gapminder, country=="Canada"), aes(x = year, y = gdpPercap)) + geom_point())
+```
+
+## Part 5. Use filter(), select() and %>%
+__Question 1__: Use filter() to create data subsets that you want to plot.
+
+__Question 2__: Practice piping together filter() and select(). Possibly even piping into ggplot().
+
+Answer:
+I combine two questions together.
+```{r}
+# Filter data: year between 1977 and 1997, only Canada and USA.
+(usa_can <- gapminder %>%
+        filter(year>=1977 & year<=1997) %>%
+        filter(country %in% c("Canada", "United States")) %>%
+        # Re-order the result
+        select (country, year, pop, lifeExp, gdpPercap))
+# Make a plot: gdpPercap vs year of USA
+(m <- ggplot(usa_can, aes(fill=country, x=factor(year), y=gdpPercap)) +
+        geom_bar(stat='identity', position='dodge') +
+        labs(x="Year", y="GPD per Capita", title="USA & Canada") +
+        theme(plot.title = element_text(hjust=0.5)))
+```
+
+## Part 6. But I want to do more!
+__Question 1__: Evaluate this code and describe the result. Presumably the analyst’s intent was to get the data for Rwanda and Afghanistan. Did they succeed? Why or why not? If not, what is the correct way to do this?
+
+filter(gapminder, country == c("Rwanda", "Afghanistan"))
+
+Answer:
+This code is wrong, although it looks correct. The correct code is shown below. The mistake is using == instead of %in%. I am not sure how to explain this mistake, but one possible reason is that when using ==, it loops inside.
+```{r}
+filter(gapminder, country %in% c("Rwanda", "Afghanistan"))
+```
+
+__Question 2__: Present numerical tables in a more attractive form, such as using knitr::kable().
+
+Answer:
+I would like to format gapminder using kable().
+```{r}
+# Load the library
+library(knitr)
+# Only keep 2 digits. Center all elements. Change the column name.
+# Since gapminder is too long to be displayed. Only the first 10 rows are displayed using head().
+(new_format <- kable(head(gapminder, 10), digits = 2, align="c", col.names=c("Country     Name","Continent","Year","Life Expectation","Population","GDP per Capita")))
+```
+
+__Question 3__: Use more of the dplyr functions for operating on a single table.
+
+Answer: 
+
+```{r}
+# Subset Americas data between 1977 and 1997 from gapminder
+americas_data <- gapminder %>%
+        filter(continent == "Americas") %>%
+        filter(year>=1977 & year<=1997)
+# Calculate GPD and add to the result. Arrange the result first by country, second by year
+americas_data %>%
+        mutate(GDP = gdpPercap * pop) %>%
+        arrange(country, year) %>%
+        # Group by year and summrize
+        group_by(year) %>% 
+        summarize(mean_pop=mean(pop), sd_pop=sd(pop))
+```
+
+[This is the end of Homework 2.]
