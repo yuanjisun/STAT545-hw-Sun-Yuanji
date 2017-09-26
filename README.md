@@ -1,3 +1,12 @@
+# STAT 545A Homework Repo
+This repo is for all STAT 545A homework.
+
+## Homework 02
+Homework 02 is stored in the folder hw02. [Here is the link to that folder](https://github.com/yuanjisun/STAT545-hw-Sun-Yuanji/tree/master/hw02)
+
+There is brief introduction to this homework in the README file in that folder.
+
+
 # _Yuanji_'s Homework 1 for **STAT 545A**
 
 ## Report Process
