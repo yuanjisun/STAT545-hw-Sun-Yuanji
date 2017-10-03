@@ -79,6 +79,8 @@ Compute a trimmed mean of life expectancy for different years. Or a weighted mea
 Answer:
 
 First, I used the trimmed mean of all countries through each year. To make it easier, I start from the trimmed mean of all countries of each year. From the figure below we can see that the life expectancy increasing sharply with year.
+
+The trimmed mean here removed the first and last 20% of data.
 ```{r}
 # Get the trimmed mean value
 q3 <- gapminder %>%
@@ -151,6 +153,8 @@ Report the absolute and/or relative abundance of countries with low life expecta
 Answer:
 
 The threshold (average life expenctancy of each year) used in this exercise is the average life expectation of all countries in each year. The absolute number of countries whose life expectancy is less than the threshold is reported.
+
+From the figure, we can get the conclusion that people in Africa has shorter life expectancy than other continents. This can also be verified from the figure in the previous question. The life expectancy in Asia is increasing fastly since the number of country below average is getting fewer.
 ```{r}
 # Count the number of countries whose life expectency is below average
 m1 <- gapminder %>%
@@ -167,7 +171,6 @@ m1 %>%
         theme(plot.title = element_text(hjust=0.5), axis.text.x = element_text(angle = 45))
 ```
 
-From the figure, we can get the conclusion that people in Africa has shorter life expectancy than other continents. This can also be verified from the figure in the previous question.f The life expectancy in Asia is increasing since the number of country below average is getting fewer.
 
 ## Question 6
 Find countries with interesting stories. Open-ended and, therefore, hard. Promising but unsuccessful attempts are encouraged. This will generate interesting questions to follow up on in class.
@@ -178,6 +181,7 @@ I want to explore how GDP of China and US changes over time. The figure below in
 
 This work will lay the foundation for the linear regression model in Question 7.
 ```{r}
+# Get GDP data for China and US.
 a1 <- gapminder %>%
         filter(country %in% c("China","United States")) %>%
         mutate(GDP=gdpPercap*pop) %>%
@@ -192,6 +196,7 @@ a1 %>%
         geom_bar(stat='identity', position='dodge') +
         labs(x="Year", y="GPD", title="China vs United States") +
         theme(plot.title = element_text(hjust=0.5))
+# Calculate the GDP ratio of China to US.
 n1 <- gapminder %>%
         filter(country %in% c("China","United States")) %>%
         mutate(GDP=gdpPercap*pop) %>%
