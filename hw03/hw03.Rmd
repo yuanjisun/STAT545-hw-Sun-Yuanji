@@ -1,0 +1,261 @@
+---
+title: "Homework 3"
+author: "Yuanji Sun"
+date: "September 30, 2017"
+output: github_document
+---
+## Report process
+
+1. Problems I ran into
+
+    - summary vs summrize: I am confuzed with these two functions. Summary only gives me a summary of exisint data, but summrize can be used with calculation (like get min_GDP) with specific outputs.
+    - arrange vs group_by: I am confuzed with these two functions as well. Arrange gives me an output with arranged table, but group_by will group everything internally and nothing will be displayed except one line indicating the group.
+    - melt: I used this function in Question 1. If I don't use it, I will not be able to put max_GDP and min_GDP side by side.
+    - Print the table and the figure at the same time (without repeating the same code): This was solved by assigning the table to a variable and piping this viable into ggplot.
+    - When using linear regression model to make a prediction, I realized that the new input data must also be a data frame. Otherwise I will get an error message.
+    - Overflow issue. When calculating the total population of all countries in each year, the error message indicated the overflow issue. This was solved by using `as.numeric()`.
+    - When making a plot, using log scaled y-axis can make the figure easier to read.
+    - Trimmed mean. I spent a long time how to remove the top 20% and the bottom 20% data. But this can be easily solved using `mean()`, just check the document `?mean`.
+
+2. Useful rescources
+
+    - Lecture notes
+    - Website: https://stackoverflow.com
+    - Google
+    - Vincenzo's help
+    - Book: R for Data Science
+
+3. Conclusion
+
+I think this homework is still easy to do. I challenged myself by making complex figures and setting up a model. By doing "I want to do more", I learned how to format my report. It is really a good practice.
+
+## Load libraries
+```{r}
+library(gapminder)
+library(tidyverse)
+library(reshape2)
+library(pander)
+library(knitr)
+```
+
+## Question 1
+Get the maximum and minimum of GDP per capita for all continents.
+
+Answer:
+Since getting max and min data throughout all years is meaningless, I used `melt` function to "reconstruct" the data frame. So the max and min GDP per capita are calculated for each year and for each continent. Since the table is long, I won't be able to describe it using words. Please see the table and the figure below.
+```{r}
+q1 <- gapminder %>%
+         group_by(continent, year) %>%
+         summarize(minGPDpercap=min(gdpPercap), maxGPDpercap=max(gdpPercap))
+pandoc.table(q1)
+q1 %>%
+        melt(measure.vars=c("minGPDpercap","maxGPDpercap")) %>%
+        ggplot(aes(x=continent, y=value)) +
+        facet_wrap(~ year) +
+        geom_bar(aes(fill=variable),stat='identity', position='dodge') +
+        labs(x="Continent",y="GDP per Capita", title="Min/Max GDP per Capita of Each Continent") +
+        theme(plot.title = element_text(hjust=0.5), axis.text.x = element_text(angle = 45))
+```
+
+## Question 2
+Look at the spread of GDP per capita within the continents.
+
+Answer:
+
+The figure below shows the spread of GDP per capita within each continent. We can see how it changes over time. Generally speaking, the GDP per capita increases over time for all continents except Africa. Oceania data is not representative and the difference between each country is not obvious since there are only a few countries.
+```{r}
+gapminder %>%
+        ggplot(aes(x = factor(year), y = gdpPercap)) +
+        scale_y_log10() +
+        geom_boxplot() +
+        facet_wrap(~ continent) +
+        labs(x="Year", y="GDP per Capita", title="Spread of GDP per Capita within Continents") +
+        theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle = 45))
+```
+
+## Question 3
+Compute a trimmed mean of life expectancy for different years. Or a weighted mean, weighting by population. Just try something other than the plain vanilla mean.
+
+Answer:
+
+First, I used the trimmed mean of all countries through each year. To make it easier, I start from the trimmed mean of all countries of each year. From the figure below we can see that the life expectancy increasing sharply with year.
+```{r}
+# Get the trimmed mean value
+q3 <- gapminder %>%
+         group_by(year) %>%
+         summarize(trim_mean=mean(lifeExp, trim=0.2))
+# Change the format of the table
+kable(q3, format = "pandoc",digits = 2, align="c", padding = 5, col.names=c("Year","Trimmed Mean"))
+# Plot
+q3 %>%
+        ggplot(aes(x=year, y=trim_mean)) +
+        geom_point() +
+        geom_line() +
+        labs(x="Year", y="Trimmed Mean of Life Expectancy", title="Trimmed Mean of Life Expectancy vs Year") +
+        theme(plot.title = element_text(hjust = 0.5))
+```
+
+The figure above only reflects the overall trend of the whole world. What is the trend for each country? I can get trimmed mean of life expectancy of each continent of different years. By comparing the figure for each continent, it is obvious that (1) Africa has the shortest life expectancy, (2) the mean life expectancy increases fastest in Asia, and (3) Oceania has the highest life expectancy.
+```{r}
+# Get the trimmed mean value
+q4 <- gapminder %>%
+         group_by(continent, year) %>%
+         summarize(trim_mean=mean(lifeExp, trim=0.2))
+# Change the format of the table
+pandoc.table(q4)
+# Plot
+q4 %>%
+        ggplot(aes(x=year, y=trim_mean)) +
+        geom_point() +
+        geom_line() +
+        facet_wrap(~ continent) +
+        labs(x="Year", y="Trimmed Mean of Life Expectancy", title="Trimmed Mean of Life Expectancy vs Year") +
+        theme(plot.title = element_text(hjust = 0.5))
+```
+
+Third, let me try the weighted mean. To make it easier, just get the weighted mean of all countries for different years.
+```{r}
+# # Calculate the total population of each year
+# (q5 <- gapminder %>%
+#          group_by(year) %>%
+#          mutate(total_pop=sum(as.numeric(pop))) %>%
+#          mutate(weight = pop/total_pop) %>%
+#          summarize(weighted_mean = weight*lifeExp))
+# q5 %>%
+#         ggplot(aes(x=year, y=weighted_mean)) +
+#         geom_point() +
+#         geom_line()
+# 
+# 
+
+
+```
+
+## Question 4
+How is life expectancy changing over time on different continents?
+
+Answer:
+
+The figure below shows how life expectancy is changing over time on different continents. Generally speaking, the overall life expectancy is increasing over year, especially Asia. However, the life expectancy in Africa is still quite low.
+```{r}
+ggplot(gapminder, aes(x=year, y=lifeExp, group=year)) +
+        geom_boxplot() +
+        facet_wrap(~ continent) +
+        labs(x="Year",y="Life Expectancy", title="Life Expectancy vs Year") +
+        theme(plot.title = element_text(hjust=0.5), axis.text.x = element_text(angle = 45))
+```
+
+## Question 5
+Report the absolute and/or relative abundance of countries with low life expectancy over time by continent: Compute some measure of worldwide life expectancy – you decide – a mean or median or some other quantile or perhaps your current age. Then determine how many countries on each continent have a life expectancy less than this benchmark, for each year.
+
+Answer:
+
+The threshold (average life expenctancy of each year) used in this exercise is the average life expectation of all countries in each year. The absolute number of countries whose life expectancy is less than the threshold is reported.
+```{r}
+# Count the number of countries whose life expectency is below average
+m1 <- gapminder %>%
+         group_by(year, continent) %>%
+         summarize(number=sum(lifeExp<mean(lifeExp)))
+# Change the format of the table
+pandoc.table(m1)
+# Plot the figure.
+m1 %>%
+        ggplot(aes(x=factor(year), y=number)) +
+        geom_bar(stat='identity', position='dodge') +
+        facet_wrap(~ continent) +
+        labs(x="Year",y="Counts", title="Number of Counties with Life Expectancy below Average over Year") +
+        theme(plot.title = element_text(hjust=0.5), axis.text.x = element_text(angle = 45))
+```
+
+From the figure, we can get the conclusion that people in Africa has shorter life expectancy than other continents. This can also be verified from the figure in the previous question.f The life expectancy in Asia is increasing since the number of country below average is getting fewer.
+
+## Question 6
+Find countries with interesting stories. Open-ended and, therefore, hard. Promising but unsuccessful attempts are encouraged. This will generate interesting questions to follow up on in class.
+
+Answer:
+
+I want to explore how GDP of China and US changes over time. The figure below indicates that (1) GDP of both countries is increasing, and (2) althogh GDP of China is still less than US, but the difference between these two countries is getting smaller and smaller.
+
+This work will lay the foundation for the linear regression model in Question 7.
+```{r}
+a1 <- gapminder %>%
+        filter(country %in% c("China","United States")) %>%
+        mutate(GDP=gdpPercap*pop) %>%
+        group_by(year, country) %>%
+        arrange(country) %>%
+        summarize(GDP)
+# Change the outpur format of the table
+kable(a1, format = "pandoc",digits = 2, align="c", padding = 5, longtable = TRUE,
+      col.names=c("Year","Country", "GDP"))
+a1 %>%
+        ggplot(aes(fill=country, x=factor(year),y=GDP)) +
+        geom_bar(stat='identity', position='dodge') +
+        labs(x="Year", y="GPD", title="China vs United States") +
+        theme(plot.title = element_text(hjust=0.5))
+n1 <- gapminder %>%
+        filter(country %in% c("China","United States")) %>%
+        mutate(GDP=gdpPercap*pop) %>%
+        group_by(year) %>%
+        arrange(country) %>%
+        summarize(China2US=GDP[1]/GDP[2])
+# Change the outpur format of the table
+pandoc.table(n1)
+n1 %>%
+        ggplot(aes(x=factor(year),y=China2US)) +
+        geom_point() +
+        geom_line() +
+        labs(x="Year", y="GPD: China/US", title="GDP Ratio between China and US") +
+        theme(plot.title = element_text(hjust=0.5))
+```
+
+## Question 7
+Make up your own! Between the dplyr coverage in class and the list above, I think you get the idea.
+
+Answer:
+
+Based on the result in Question 6 and assume the trend of GDP keeps the same, when will China and US have the same GDP (or when will GDP of China exceeds which of US)?
+
+First, let's see the log scaled GDP ratio of China to US.
+```{r}
+n1 %>%
+        ggplot(aes(x=factor(year),y=log10(China2US))) +
+        geom_point() +
+        geom_line() +
+        labs(x="Year", y="GPD: China/US", title="GDP Ratio between China and US") +
+        theme(plot.title = element_text(hjust=0.5))
+```
+
+We can see that from 1977 till now, the log scaled ratio is linear. Thus, I would like to select the data since 1977 and make linear regression here based on the results obtained from the previous question.
+
+Actually, removing data before 1977 is reasonable. The "Reform and Opening-up Policy" was launched in China since 1978. Thus, the ratio keeps increase since ~1977.
+```{r}
+c1 <- gapminder %>%
+        filter(country %in% c("China","United States"), year >=1977) %>%
+        mutate(GDP=gdpPercap*pop) %>%
+        group_by(year) %>%
+        arrange(country) %>%
+        summarize(log_China2US=log10(GDP[1]/GDP[2]))
+# Change the outpur format of the table
+kable(c1, digits=3, align="c", col.names=c("Year","GDP China/US (log)"))
+fit1 <- lm(log_China2US ~ year, data=c1)
+(sum_fit1 <- summary(fit1))
+new_year <- data.frame(year=c(2008:2030))
+predict(fit1, new_year)
+qplot(new_year$year,predict(fit1, new_year)) + 
+        geom_hline(yintercept=0, linetype="dashed") +
+        geom_vline(xintercept=2025, linetype="dashed")
+```
+
+When the GDP of China equals to that of US, the ratio will be 1 and the log scaled ratio will be 0. From the results above, it is clear that between the year 2025 (#18) and the year 2026 (#19), the ratio is 0. From the figure above, we can clearly see that the year 2025 is the key year, in which the GDP of China will be higher than US.
+
+## But I want to do more!
+
+Layout stretch goal: get table and figure side-by-side.
+
+Table stretch goal: there are some really nice fancy table helper packages.
+
+Answer:
+
+Layout stretch goal is realized above. Table stretch goal is also realized using `kable()` and `pandoc()`.
+
+[This is the end of Homework 03.]
