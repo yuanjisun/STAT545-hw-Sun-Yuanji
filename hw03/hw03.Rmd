@@ -42,7 +42,10 @@ library(knitr)
 Get the maximum and minimum of GDP per capita for all continents.
 
 Answer:
+
 Since getting max and min data throughout all years is meaningless, I used `melt` function to "reconstruct" the data frame. So the max and min GDP per capita are calculated for each year and for each continent. Since the table is long, I won't be able to describe it using words. Please see the table and the figure below.
+
+From the results below, we can see that (1) Africa has the lowest GDP per capita for all years, (2) the difference between max and min GDP/cap was huge in Americas but now the difference is much smaller, (3) the min GDP/cap for all continents increases over time, which means all countries are now developing.
 ```{r}
 # Get the data
 q1 <- gapminder %>%
@@ -81,9 +84,9 @@ Compute a trimmed mean of life expectancy for different years. Or a weighted mea
 
 Answer:
 
-First, I used the trimmed mean of all countries through each year. To make it easier, I start from the trimmed mean of all countries of each year. From the figure below we can see that the life expectancy increasing sharply with year.
+First, I used the trimmed mean of all countries through each year. The trimmed mean here removed the first and last 20% of data.
 
-The trimmed mean here removed the first and last 20% of data.
+To make it easier, I start from the trimmed mean of all countries of each year. From the figure below, we can see that the life expectancy increasing sharply with year, from ~ 40 in the past to ~ 70 in 2007.
 ```{r}
 # Get the trimmed mean value
 q3 <- gapminder %>%
@@ -118,7 +121,7 @@ q4 %>%
         theme(plot.title = element_text(hjust = 0.5))
 ```
 
-Third, let me try the weighted mean. To make it easier, just get the weighted mean of all countries for each year. From the figure below, we can see the trend of the life expectancy is silimar to that of the trimmed mean. However, the first 4 data points are different.
+Third, let me try the weighted mean. To make it easier, just get the weighted mean of all countries for each year. From the figure below, we can see the trend of the life expectancy is silimar to that of the trimmed mean. However, the trend of the first 4 data points are different. This is resulted from the difference in methods used in calculating the mean value.
 ```{r}
 # Calculate the total population of each year
 q5 <- gapminder %>%
@@ -164,6 +167,8 @@ How is life expectancy changing over time on different continents?
 
 Answer:
 
+Actually, this question is answered in Question 3. However, I would like to use another figure type to answer this question.
+
 The figure below shows how life expectancy is changing over time on different continents. Generally speaking, the overall life expectancy is increasing over year, especially Asia. However, the life expectancy in Africa is still quite low.
 ```{r}
 ggplot(gapminder, aes(x=year, y=lifeExp, group=year)) +
@@ -182,6 +187,10 @@ The threshold (average life expenctancy of each year) used in this exercise is t
 
 From the figure, we can get the conclusion that people in Africa has shorter life expectancy than other continents. This can also be verified from the figure in the previous question. The life expectancy in Asia is increasing fastly since the number of country below average is getting fewer.
 ```{r}
+# Print the threshold
+gapminder %>%
+        group_by(year) %>%
+        summarize(mean_life_exp=mean(lifeExp))
 # Count the number of countries whose life expectency is below average
 m1 <- gapminder %>%
         group_by(year, continent) %>%
@@ -203,7 +212,7 @@ Find countries with interesting stories. Open-ended and, therefore, hard. Promis
 
 Answer:
 
-I want to explore how GDP of China and US changes over time. The figure below indicates that (1) GDP of both countries is increasing, and (2) althogh GDP of China is still less than US, but the difference between these two countries is getting smaller and smaller.
+I want to explore how GDP of China and US changes over time (both GDP and the GDP ratio). The figure below indicates that (1) GDP of both countries is increasing, and (2) althogh GDP of China is still less than US, but the difference between these two countries is getting smaller and smaller.
 
 This work will lay the foundation for the linear regression model in Question 7.
 ```{r}
