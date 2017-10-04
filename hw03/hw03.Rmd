@@ -18,6 +18,7 @@ output:
     - Overflow issue. When calculating the total population of all countries in each year, the error message indicated the overflow issue. This was solved by using `as.numeric()`.
     - When making a plot, using log scaled y-axis can make the figure easier to read.
     - Trimmed mean. I spent a long time how to remove the top 20% and the bottom 20% data. But this can be easily solved using `mean()`, just check the document `?mean`.
+    - Put figures and tables side by side. I figured out that the output must be HTML in order to realize this goal. However, after pushing RMD file, it looks messy. So please refer to my HTML file when reviewing it.
 
 2. Useful rescources
 
@@ -50,6 +51,7 @@ Since getting max and min data throughout all years is meaningless, I used `melt
 From the results below, we can see that (1) Africa has the lowest GDP per capita for all years, (2) the difference between max and min GDP/cap was huge in Americas but now the difference is much smaller, (3) the min GDP/cap for all continents increases over time, which means all countries are now developing.
 
 <div class="twoC">
+
 ```{r results = 'asis', echo=FALSE}
 # Get the data
 q1 <- gapminder %>%
@@ -80,6 +82,7 @@ Answer:
 The figure below shows the spread of GDP per capita within each continent. We can see how it changes over time. Generally speaking, the GDP per capita increases over time for all continents except Africa. Oceania data is not representative and the difference between each country is not obvious since there are only a few countries.
 
 <div class="twoC">
+
 ```{r results = 'asis', echo=FALSE}
 # Generate statistical summary of GDP data.
 o1 <- gapminder %>%
