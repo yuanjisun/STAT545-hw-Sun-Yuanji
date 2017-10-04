@@ -18,8 +18,9 @@ output:
     - Overflow issue. When calculating the total population of all countries in each year, the error message indicated the overflow issue. This was solved by using `as.numeric()`.
     - When making a plot, using log scaled y-axis can make the figure easier to read.
     - Trimmed mean. I spent a long time how to remove the top 20% and the bottom 20% data. But this can be easily solved using `mean()`, just check the document `?mean`.
-    - Put figures and tables side by side. I figured out that the output must be HTML in order to realize this goal. However, after pushing RMD file, it looks messy. So please refer to my HTML file when reviewing it.
-
+    - Put figures and tables side by side. I figured out that the output must be HTML in order to realize this goal.
+    - After putting figure and table side by side, the RMD file in GitHub repo looked messy. The reason is that I missed an empty line between R code and HTML code. Now the problem is solved.
+    
 2. Useful rescources
 
     - Lecture notes
@@ -115,6 +116,7 @@ First, I used the trimmed mean of all countries through each year. The trimmed m
 To make it easier, I start from the trimmed mean of all countries of each year. From the figure below, we can see that the life expectancy increasing sharply with year, from ~ 40 in the past to ~ 70 in 2007.
 
 <div class="twoC">
+
 ```{r results = 'asis', echo=FALSE}
 # Get the trimmed mean value
 q3 <- gapminder %>%
@@ -139,6 +141,7 @@ q3 %>%
 The figure above only reflects the overall trend of the whole world. What is the trend for each country? I can get trimmed mean of life expectancy of each continent of different years. By comparing the figure for each continent, it is obvious that (1) Africa has the shortest life expectancy, (2) the mean life expectancy increases fastest in Asia, and (3) Oceania has the highest life expectancy.
 
 <div class="twoC">
+
 ```{r results = 'asis', echo=FALSE}
 # Get the trimmed mean value
 q4 <- gapminder %>%
@@ -164,6 +167,7 @@ q4 %>%
 Third, let me try the weighted mean. To make it easier, just get the weighted mean of all countries for each year. From the figure below, we can see the trend of the life expectancy is silimar to that of the trimmed mean. However, the trend of the first 4 data points are different. This is resulted from the difference in methods used in calculating the mean value.
 
 <div class="twoC">
+
 ```{r results = 'asis', echo=FALSE}
 # Calculate the total population of each year
 q5 <- gapminder %>%
@@ -191,6 +195,7 @@ q5 %>%
 Now, I am making seperate figures for each continent to see how the weighted mean life expectancy change over time. The result is almost the same as that of trimmed mean. So I will not repeat the short analysis here.
 
 <div class="twoC">
+
 ```{r results = 'asis', echo=FALSE}
 # Calculate the total population of each year
 x1 <- gapminder %>%
@@ -226,6 +231,7 @@ Actually, this question is answered in Question 3. However, I would like to use 
 The figure below shows how life expectancy is changing over time on different continents. Generally speaking, the overall life expectancy is increasing over year, especially Asia. However, the life expectancy in Africa is still quite low.
 
 <div class="twoC">
+
 ```{r results = 'asis', echo=FALSE}
 # Generate statistical summary of GDP data.
 z1 <- gapminder %>%
@@ -256,6 +262,7 @@ The threshold (average life expenctancy of each year) used in this exercise is t
 From the figure, we can get the conclusion that people in Africa has shorter life expectancy than other continents. This can also be verified from the figure in the previous question. The life expectancy in Asia is increasing fastly since the number of country below average is getting fewer.
 
 <div class="twoC">
+
 ```{r results = 'asis', echo=FALSE}
 # Count the number of countries whose life expectency is below average
 m1 <- gapminder %>%
@@ -296,6 +303,7 @@ I want to explore how GDP of China and US changes over time (both GDP and the GD
 This work will lay the foundation for the linear regression model in Question 7.
 
 <div class="twoC">
+
 ```{r results = 'asis', echo=FALSE}
 # Get GDP data for China and US.
 a1 <- gapminder %>%
@@ -320,6 +328,7 @@ a1 %>%
 <div class="clearer"></div>
 
 <div class="twoC">
+
 ```{r results = 'asis', echo=FALSE}
 # Calculate the GDP ratio of China to US.
 n1 <- gapminder %>%
