@@ -5,6 +5,7 @@ date: "September 30, 2017"
 output: 
   html_document:
     css: two_columns.css
+    keep_md: yes
 ---
 ## Report process
 
