@@ -59,7 +59,7 @@ q1 <- gapminder %>%
         group_by(continent, year) %>%
         summarize(minGPDpercap=min(gdpPercap), maxGPDpercap=max(gdpPercap))
 # Change the output format
-pandoc.table(q1)
+pandoc.table(q1,col.names=c("Continent", "Year", "Min GPD/cap", "Max GPD/cap"))
 ```
 
 ```{r echo=FALSE}
@@ -148,7 +148,7 @@ q4 <- gapminder %>%
         group_by(continent, year) %>%
         summarize(trim_mean=mean(lifeExp, trim=0.2))
 # Change the format of the table
-pandoc.table(q4)
+pandoc.table(q4, col.names=c("Continent", "Year", "Trimmed Mean"))
 ```
 
 ```{r echo=FALSE}
@@ -177,7 +177,7 @@ q5 <- gapminder %>%
         mutate(weighted_life = weight*lifeExp) %>%
         summarize(weighted_mean=sum(weighted_life))
 # Change the output format
-pandoc.table(q5)
+pandoc.table(q5, col.names=c("Year", "Weighted Mean"))
 ```
 
 ```{r echo=FALSE}
@@ -205,7 +205,7 @@ x1 <- gapminder %>%
         mutate(weighted_life = weight*lifeExp) %>%
         summarize(weighted_mean=sum(weighted_life))
 # Change the output format
-pandoc.table(x1)
+pandoc.table(x1, col.names=c("Year", "Continent", "Weighted Mean"))
 ```
 
 ```{r echo=FALSE}
@@ -338,7 +338,7 @@ n1 <- gapminder %>%
         arrange(country) %>%
         summarize(China2US=GDP[1]/GDP[2])
 # Change the outpur format of the table
-pandoc.table(n1)
+pandoc.table(n1, col.names=c("Year", "GDP China/US"))
 ```
 
 ```{r echo=FALSE}

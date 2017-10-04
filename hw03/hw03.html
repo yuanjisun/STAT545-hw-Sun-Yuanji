@@ -184,19 +184,19 @@ library(tidyverse)</code></pre>
 <p>Since getting max and min data throughout all years is meaningless, I used <code>melt</code> function to “reconstruct” the data frame. So the max and min GDP per capita are calculated for each year and for each continent. Since the table is long, I won’t be able to describe it using words. Please see the table and the figure below.</p>
 <p>From the results below, we can see that (1) Africa has the lowest GDP per capita for all years, (2) the difference between max and min GDP/cap was huge in Americas but now the difference is much smaller, (3) the min GDP/cap for all continents increases over time, which means all countries are now developing.</p>
 <div class="twoC">
-<table style="width:68%;">
+<table style="width:65%;">
 <colgroup>
 <col width="16%"></col>
 <col width="9%"></col>
-<col width="20%"></col>
-<col width="20%"></col>
+<col width="19%"></col>
+<col width="19%"></col>
 </colgroup>
 <thead>
 <tr class="header">
-<th align="center">continent</th>
-<th align="center">year</th>
-<th align="center">minGPDpercap</th>
-<th align="center">maxGPDpercap</th>
+<th align="center">Continent</th>
+<th align="center">Year</th>
+<th align="center">Min GPD/cap</th>
+<th align="center">Max GPD/cap</th>
 </tr>
 </thead>
 <tbody>
@@ -1146,17 +1146,17 @@ library(tidyverse)</code></pre>
 </div>
 <p>The figure above only reflects the overall trend of the whole world. What is the trend for each country? I can get trimmed mean of life expectancy of each continent of different years. By comparing the figure for each continent, it is obvious that (1) Africa has the shortest life expectancy, (2) the mean life expectancy increases fastest in Asia, and (3) Oceania has the highest life expectancy.</p>
 <div class="twoC">
-<table style="width:42%;">
+<table style="width:46%;">
 <colgroup>
 <col width="16%"></col>
 <col width="9%"></col>
-<col width="15%"></col>
+<col width="19%"></col>
 </colgroup>
 <thead>
 <tr class="header">
-<th align="center">continent</th>
-<th align="center">year</th>
-<th align="center">trim_mean</th>
+<th align="center">Continent</th>
+<th align="center">Year</th>
+<th align="center">Trimmed Mean</th>
 </tr>
 </thead>
 <tbody>
@@ -1476,8 +1476,8 @@ library(tidyverse)</code></pre>
 </colgroup>
 <thead>
 <tr class="header">
-<th align="center">year</th>
-<th align="center">weighted_mean</th>
+<th align="center">Year</th>
+<th align="center">Weighted Mean</th>
 </tr>
 </thead>
 <tbody>
@@ -1546,9 +1546,9 @@ library(tidyverse)</code></pre>
 </colgroup>
 <thead>
 <tr class="header">
-<th align="center">year</th>
-<th align="center">continent</th>
-<th align="center">weighted_mean</th>
+<th align="center">Year</th>
+<th align="center">Continent</th>
+<th align="center">Weighted Mean</th>
 </tr>
 </thead>
 <tbody>
@@ -2855,15 +2855,15 @@ gapminder %&gt;%
 
 </div>
 <div class="twoC">
-<table style="width:24%;">
+<table style="width:29%;">
 <colgroup>
 <col width="9%"></col>
-<col width="13%"></col>
+<col width="19%"></col>
 </colgroup>
 <thead>
 <tr class="header">
-<th align="center">year</th>
-<th align="center">China2US</th>
+<th align="center">Year</th>
+<th align="center">GDP China/US</th>
 </tr>
 </thead>
 <tbody>
