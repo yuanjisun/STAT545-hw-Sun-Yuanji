@@ -12,6 +12,8 @@ This is the folder for STAT 545A Homework 3, which includes two files, RMD and H
 
 [Link to HTML file (DOWNLOAD first)](https://github.com/yuanjisun/STAT545-hw-Sun-Yuanji/blob/master/hw03/hw03.html)
 
+MD file is not generated in this homework because HTML codes do not work in MD file and it will look quite messy.
+
 __Note__
 
 In order to put figures and tables side by side, HTML is rendered instead of MD file. Since HTML cannot be displayed in GitHub properly and my HTML file is too large to be opened in GitHub website, please download the file and open it using a browser.
