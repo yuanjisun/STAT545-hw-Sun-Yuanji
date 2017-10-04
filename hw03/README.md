@@ -18,3 +18,6 @@ __Note__
 
 In order to put figures and tables side by side, HTML is rendered instead of MD file. Since HTML cannot be displayed in GitHub properly and my HTML file is too large to be opened in GitHub website, please download the file and open it using a browser.
 
+Since I do not have LaTeX on my computer, I cannot submit a PDF version. So please use the HTML for grading.
+
+

@@ -5,7 +5,6 @@ date: "September 30, 2017"
 output: 
   html_document:
     css: two_columns.css
-    keep_md: yes
 ---
 ## Report process
 
@@ -394,7 +393,10 @@ predict(fit1, new_year)
 # Plot and select the key year point
 qplot(new_year$year,predict(fit1, new_year)) + 
         geom_hline(yintercept=0, linetype="dashed") +
-        geom_vline(xintercept=2025, linetype="dashed")
+        geom_vline(xintercept=2025, linetype="dashed") +
+        xlab("Predicted Year") +
+        ylab("Log Ratio") +
+        ggtitle("Linear Regression Prediction")
 ```
 
 When the GDP of China equals to that of US, the ratio will be 1 and the log scaled ratio will be 0. From the results above, it is clear that between the year 2025 (#18) and the year 2026 (#19), the ratio is 0. From the figure above, we can clearly see that the year 2025 is the key year, in which the GDP of China will be higher than US.
