@@ -6,8 +6,13 @@ I finished all questions and did much beyond the requirement, including making c
 
 Detailed information about this homework, such as problems I ran into, useful resources, are included in the file below.
 
-This is the folder for STAT 545A Homework 3, which includes two files, RMD and MD.
+This is the folder for STAT 545A Homework 3, which includes two files, RMD and HTML.
 
 [Link to RMD file](https://github.com/yuanjisun/STAT545-hw-Sun-Yuanji/blob/master/hw03/hw03.Rmd)
 
-[Link to MD file](https://github.com/yuanjisun/STAT545-hw-Sun-Yuanji/blob/master/hw03/hw03.md)
+[Link to HTML file](https://github.com/yuanjisun/STAT545-hw-Sun-Yuanji/blob/master/hw03/hw03.html)
+
+Please note:
+
+In order to put figures and tables side by side, HTML is rendered instead of MD file. Since HTML cannot be displayed in GitHub properly, please download the file and open it using a browser.
+
