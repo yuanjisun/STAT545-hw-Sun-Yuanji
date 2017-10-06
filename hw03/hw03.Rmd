@@ -6,7 +6,6 @@ output:
   html_document:
     css: two_columns.css
 ---
-
 ## Report process
 
 1. Problems I ran into
