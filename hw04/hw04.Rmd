@@ -1,0 +1,202 @@
+---
+title: "Homework 4"
+author: "Yuanji Sun"
+date: "October 4, 2017"
+output: github_document
+---
+# Report porcess
+
+(delete redundant libraries)
+
+
+Useful resources
+- https://www.rdocumentation.org/
+
+# Preparation: load libraries
+```{r}
+library(gapminder)
+library(tidyverse)
+#library(reshape2)
+#library(pander)
+library(knitr)
+```
+
+# Choose your own adventure
+1. Pick one of the data reshaping prompts and do it.
+2. Pick a join prompt and do it.
+3. It is fine to work with a new dataset and/or create variations on these problem themes.
+
+
+# General data reshaping and relationship to aggregation
+__Problem__: You have data in one “shape” but you wish it were in another. Usually this is because the alternative shape is superior for presenting a table, making a figure, or doing aggregation and statistical analysis.
+
+__Solution__: Reshape your data. For simple reshaping, gather() and spread() from tidyr will suffice. Do the thing that it possible / easier now that your data has a new shape.
+
+## Activity #1
+Make a tibble with one row per year and columns for life expectancy for two or more countries.
+
+- Use `knitr::kable()` to make this table look pretty in your rendered homework.
+- Take advantage of this new data shape to scatterplot life expectancy for one country against that of another.
+
+Answer:
+
+Here I would like to select the following three countries: Canada, USA and Mexico, and reshape the table.
+```{r}
+# Select data and reshape the table
+a2 <- gapminder %>%
+        filter(country %in% c("Canada", "United States", "Mexico")) %>%
+        select(country, year, lifeExp) %>%
+        gather(Variable, Value, lifeExp)
+# Format the output
+kable(a2, format = "pandoc",digits = 2, align="c", padding = 5,
+      col.names=c("Country","Year","Variable", "Value"))
+```
+
+## Activity #2
+Compute some measure of life expectancy (mean? median? min? max?) for all possible combinations of continent and year. Reshape that to have one row per year and one variable for each continent. Or the other way around: one row per continent and one variable per year.
+
+- Use `knitr::kable()` to make these tables look pretty in your rendered homework.
+- Is there a plot that is easier to make with the data in this shape versis the usual form? If so (or you think so), try it! Reflect.
+
+Answer:
+
+(1) The min, max, median and mean life expectancy are calculated below. The table has been reshaped into one continent per row with one variable per year. `kable()` is used to change the format of the table.
+
+(2) See the figure below for a plot that is easier to make with the data in this shape.
+```{r}
+# Reshape the table and calculate all values
+a3 <- gapminder %>%
+        group_by(continent, year) %>%
+        summarize(Mean=mean(lifeExp), Median=median(lifeExp), Minimum=min(lifeExp),
+                  Maximum=max(lifeExp)) %>%
+        gather(Variable, Value, -continent, -year)
+# Format the output
+kable(a3, format = "pandoc",digits = 3, align="c", padding = 5,
+      col.names=c("Continent","Year","Variable", "Value"))
+# Make a figure
+a3 %>%
+        ggplot(aes(x=year,y=Value)) +
+        geom_bar(aes(fill=Variable),stat='identity', position='dodge') +
+        facet_wrap(~continent) +
+        labs(x="Year",y="Life Expectancy", title="Statistical Despcription of Life Expectancy") +
+        theme(plot.title = element_text(hjust=0.5),
+              strip.background = element_rect(fill="orange"))
+```
+
+## Activity #3
+In Window functions, we formed a tibble with 24 rows: 2 per year, giving the country with both the lowest and highest life expectancy (in Asia). Take that table (or a similar one for all continents) and reshape it so you have one row per year or per year * continent combination.
+
+Answer:
+
+I am using the same table discussed in lecture.
+```{r}
+# Reproduce the same table used in the lecture
+a4 <- gapminder %>%
+  filter(continent == "Asia") %>%
+  select(year, country, lifeExp) %>%
+  group_by(year) %>%
+  filter(min_rank(desc(lifeExp)) < 2 | min_rank(lifeExp) < 2) %>% 
+  arrange(year)
+# Reshape the table above
+a5 <- a4 %>%
+        gather(variable, value, lifeExp)
+# Format the output
+kable(a5, format = "pandoc",digits = 2, align="c", padding = 5,
+      col.names=c("Year","Country","Variable", "Value"))
+```
+
+
+# Join, merge, look up
+__Problem__: You have two data sources and you need info from both in one new data object.
+
+__Solution__: Perform a join, which borrows terminology from the database world, specifically SQL.
+
+## Activity #1
+Create a second data frame, complementary to Gapminder. Join this with (part of) Gapminder using a  `dplyr` join function and make some observations about the process and result. Explore the different types of joins. Examples of a second data frame you could build:
+
+- One row per country, a country variable and one or more variables with extra info, such as language spoken, NATO membership, national animal, or capitol city. If you really want to be helpful, you could attempt to make a pull request to resolve this issue, where I would like to bring ISO country codes into the gapminder package.
+- One row per continent, a continent variable and one or more variables with extra info, such as northern versus southern hemisphere.
+
+Answer:
+
+First, I created a dataframe of all NATO countries (29 countries in total at present) and the year when they joined NATO.
+```{r}
+# Create a dataframe of NATO countries.
+country <- c("Albania","Belgium","Bulgaria","Canada","Croatia","Czech Republic",
+          "Denmark","Estonia","France","Germany","Greece","Hungary","Iceland","Italy",
+          "Latvia","Lithuania","Luxembourg","Montenegro","Netherlands","Norway","Poland",
+          "Portugal","Romania","Slovakia","Slovenia","Spain","Turkey","United Kingdom",
+          "United States")
+year_nato <- c(2009, 1949, 2004, 1949, 2009, 1999, 1949, 2004, 1949, 1955, 1952, 1999, 1949, 1949,
+               2004, 2004, 1949, 2017, 1949, 1949, 1999, 1949, 2004, 2004, 2004, 1982, 1952,
+               1949, 1949)
+NATO <- data.frame(country, year_nato)
+kable(NATO, format = "pandoc",align="c", padding = 5, col.names=c("Country","Year Joined NATO"))
+```
+
+Second, I would like to add additional information (GDP/cap, lifeExp, etc.) to the table NATO. From the result, we can see that the data for 5 countries is not available with "NA" throughout the whole row.
+```{r}
+b1 <- left_join(NATO, gapminder, by="country")
+kable(b1, format = "pandoc",digits = 2, align="c", padding = 5,
+      col.names=c("Country","Year Joined NATO","Continent","Year", "Life Expentancy","Population", "GDP per Capita"))
+```
+
+Third, I want to see which NATO countries in NATO dataframe are not available in gapminder. Although we can see these countries with `NA` in the table above, I want to see a very short and clear table instead of a long and complex table.
+```{r}
+m2 <- anti_join(NATO, gapminder, by="country")
+kable(m2, format = "pandoc", align="c", padding = 5, col.names=c("Country","Year Joined NATO"))
+```
+
+Fourth, I want to select the data in gapminder by removing those 5 countries without data in gapminder.
+```{r}
+y1 <- semi_join(gapminder, NATO, by="country")
+kable(y1, format = "pandoc",digits = 2, align="c", padding = 5,
+      col.names=c("Country","Continent","Year", "Life Expentancy","Population", "GDP per Capita"))
+```
+
+Fifth, I want to combine two tables together, keeping full records of both tables. Cpmared with gapminder (which has 1704 rows), the output has 1709 row now.
+```{r}
+x1 <- full_join(gapminder, NATO, by="country")
+kable(x1, format = "pandoc",digits = 2, align="c", padding = 5,
+      col.names=c("Country","Continent","Year", "Life Expentancy","Population","GDP per Capita",
+                  "Year Joined NATO"))
+nrow(gapminder)
+nrow(x1)
+```
+
+Sixth, combine two tables together by matching countries in both NATO and gapminder.
+```{r}
+x9 <- inner_join(NATO, gapminder, by="country")
+kable(x9, format = "pandoc",digits = 2, align="c", padding = 5,
+      col.names=c("Country","Year Joined NATO","Continent","Year", "Life Expentancy","Population",
+                  "GDP per Capita"))
+nrow(x9)
+```
+
+The difference between 4th and 6th is that 6th has "Year Joined NATO" in the result but 4th does not have it. 4th is selection while 6th is combination.
+
+## Activity #2
+- This is really an optional add-on to either of the previous activities.
+- Explore the base function `merge()`, which also does joins. Compare and contrast with dplyr joins.
+- Explore the base function `match()`, which is related to joins and merges, but is really more of a “table lookup”. Compare and contrast with a true join/merge.
+
+Answer:
+
+First, let me try `merge()` first and see the result.
+```{r}
+merge(gapminder,NATO)
+```
+
+This result shows that `merge()` is just like `inner_join()` in `dplyr`, which combines two tables together but only includes observations that match in both NATO and gapminder. The result of `merge()` above is the same as `inner_join(gapminder, NATO)`.
+
+Second, let me try `match()` and see the result.
+```{r}
+match(NATO,gapminder)
+```
+
+`match()` returns a vector of the positions of first matches of its first argument (`NATO`) in its second (`gapminder`). `%in%` operator is equivalent to `match()`. If it is not found, `NA` will be returned. Usually `match()` is used between two vectors. So using two dataframes here is not a good example.
+
+
+[This is the end of Homework 4.]
+
+

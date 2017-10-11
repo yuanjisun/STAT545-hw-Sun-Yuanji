@@ -10,3 +10,8 @@ Homework 02 is stored in the folder hw02. [Here is the link to that folder.](htt
 ## Homework 03
 Homework 03 is stored in the folder hw03. [Here is the link to that folder.](https://github.com/yuanjisun/STAT545-hw-Sun-Yuanji/tree/master/hw03)
 
+## Homework 04
+Homework 04 is stored in the folder hw03. [Here is the link to that folder.](https://github.com/yuanjisun/STAT545-hw-Sun-Yuanji/tree/master/hw04)
+
+
+
