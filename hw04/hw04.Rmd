@@ -171,7 +171,7 @@ m2 <- anti_join(NATO, gapminder, by="country")
 kable(m2, format = "pandoc", align="c", padding = 5, col.names=c("Country","Year Joined NATO"))
 ```
 
-Fourth, I want to select the data in gapminder by removing those 5 countries without data in gapminder.
+Fourth, I want to pick up the data of NATO countries in gapminder but remove those 5 countries without data in gapminder.
 ```{r}
 y1 <- semi_join(gapminder, NATO, by="country")
 kable(y1, format = "pandoc",digits = 2, align="c", padding = 5,
