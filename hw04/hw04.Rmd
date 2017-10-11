@@ -5,19 +5,27 @@ date: "October 4, 2017"
 output: github_document
 ---
 # Report porcess
+I chose three questions in the reshaping part and two questinos in the join dataframe part.
 
-(delete redundant libraries)
+1. Problems I ran into
 
+    - The order of `x` and `y` in the `XXX_join`. This problem was solved by reading online documents, which are provided below. Although I understand it in class, I was still confuzed a bit when doing this homework.
+    - Difference between `gather()`, `spread()`, `union()`. I tried to read the build-in documentation in RStudio but it was difficult to understand. The websites below helped me a lot. The most important part for me is the `key` and `value` in the function and how they work.
 
-Useful resources
-- https://www.rdocumentation.org/
+2. Useful resources
+
+    - https://www.rdocumentation.org/
+    - Lecture notes
+    - https://rpubs.com/bradleyboehmke/data_wrangling This website provides very good summary and compares several functions with good examples.
+    
+3. Conclusion
+
+This homework went on smoothly with only a few questions. I checked online resources and fixed them. I am now clear with different types of join and reshape the table.
 
 # Preparation: load libraries
 ```{r}
 library(gapminder)
 library(tidyverse)
-#library(reshape2)
-#library(pander)
 library(knitr)
 ```
 
