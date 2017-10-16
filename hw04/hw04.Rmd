@@ -37,7 +37,7 @@ library(knitr)
 
 
 # General data reshaping and relationship to aggregation
-__Problem__: You have data in one “shape” but you wish it were in another. Usually this is because the alternative shape is superior for presenting a table, making a figure, or doing aggregation and statistical analysis.
+__Problem__: You have data in one "shape" but you wish it were in another. Usually this is because the alternative shape is superior for presenting a table, making a figure, or doing aggregation and statistical analysis.
 
 __Solution__: Reshape your data. For simple reshaping, gather() and spread() from tidyr will suffice. Do the thing that it possible / easier now that your data has a new shape.
 
@@ -53,7 +53,7 @@ Here I would like to select the following three countries: Canada, USA and Mexic
 
 From the figure, we can see that the life expectancy of these three countries are increasing over year. But Canada always has the highest life expectancy while Mexico has the lowest value.
 ```{r}
-# Select data and reshape the table
+# Select data and reshape the table (long table)
 a2 <- gapminder %>%
         filter(country %in% c("Canada", "United States", "Mexico")) %>%
         select(country, year, lifeExp) %>%
@@ -74,6 +74,16 @@ a2 %>%
         theme(plot.title = element_text(hjust=0.5))
 ```
 
+Let's have a look at the wide table.
+```{r}
+# Turn the long table obtained above into a wide one.
+wide1 <- a2 %>%
+        spread("country", "Value")
+# Format the output.
+kable(wide1, format = "pandoc",digits = 2, align="c", padding = 5,
+      col.names=c("Year","Variable","Canada", "Mexico", "United States"))
+```
+
 ## Activity #2
 Compute some measure of life expectancy (mean? median? min? max?) for all possible combinations of continent and year. Reshape that to have one row per year and one variable for each continent. Or the other way around: one row per continent and one variable per year.
 
@@ -88,7 +98,7 @@ Answer:
 
 From the figure, we can see that although the life expectancy of all continents are increasing, Africa has the lowest values. Oceania has the smallest variance because there are only a few countries. Asia has the largest variance, which means some countries have very high life expectancy while some have very low life expectancy.
 ```{r}
-# Reshape the table and calculate all values
+# Reshape the table and calculate all values (long table)
 a3 <- gapminder %>%
         group_by(continent, year) %>%
         summarize(Mean=mean(lifeExp), Median=median(lifeExp), Minimum=min(lifeExp),
@@ -107,6 +117,27 @@ a3 %>%
               strip.background = element_rect(fill="orange"))
 ```
 
+Let's turn it into a wide table: one row per year and one variable for each continent.
+```{r}
+# Turn the table into a wide one with one row per year and one variable for each continent
+wide2 <- a3 %>%
+        spread(continent, Value)
+# Format the output
+kable(wide2, format = "pandoc",digits = 3, align="c", padding = 5,
+      col.names=c("Year","Variable", "Africa","Americas","Asia","Europe","Oceania"))
+```
+
+Or, I can also turn it into a wide table: one row per continent and one variable per year.
+```{r}
+# Turn the table into a wide one with one row per year and one variable for each continent
+wide3 <- a3 %>%
+        spread(year, Value)
+# Format the output
+kable(wide3, format = "pandoc",digits = 2, align="c", padding = 5,
+      col.names=c("Continent","Variable", "1952","1957","1962","1967","1972","1977","1982","1987","1992",
+                  "1997","2002","2007"))
+```
+
 ## Activity #3
 In Window functions, we formed a tibble with 24 rows: 2 per year, giving the country with both the lowest and highest life expectancy (in Asia). Take that table (or a similar one for all continents) and reshape it so you have one row per year or per year * continent combination.
 
@@ -121,7 +152,7 @@ a4 <- gapminder %>%
   group_by(year) %>%
   filter(min_rank(desc(lifeExp)) < 2 | min_rank(lifeExp) < 2) %>% 
   arrange(year)
-# Reshape the table above
+# Reshape the table above (long table)
 a5 <- a4 %>%
         gather(variable, value, lifeExp)
 # Format the output
@@ -129,6 +160,15 @@ kable(a5, format = "pandoc",digits = 2, align="c", padding = 5,
       col.names=c("Year","Country","Variable", "Value"))
 ```
 
+Let me turn the long table above into a wide one with one year per row. We can see that the life expectancy of Japan increases to the highest one in Asia very quickly while Afghanistan always has the lowest life expectancy, which is only about one half of the highest value in each year.
+```{r}
+# Turn the long table into a long form.
+wide4 <- a5 %>%
+        spread(country, value)
+# Format the output
+kable(wide4, format = "pandoc",digits = 2, align="c", padding = 5,
+      col.names=c("Year","Variable","Afghanistan", "Combodia", "Israel", "Japan"))
+```
 
 # Join, merge, look up
 __Problem__: You have two data sources and you need info from both in one new data object.
