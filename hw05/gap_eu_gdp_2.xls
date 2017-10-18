@@ -1,0 +1,18 @@
+structure(list(country = structure(1:30, .Label = c("Albania", 
+"Austria", "Belgium", "Bosnia and Herzegovina", "Bulgaria", "Croatia", 
+"Czech Republic", "Denmark", "Finland", "France", "Germany", 
+"Greece", "Hungary", "Iceland", "Ireland", "Italy", "Montenegro", 
+"Netherlands", "Norway", "Poland", "Portugal", "Romania", "Serbia", 
+"Slovak Republic", "Slovenia", "Spain", "Sweden", "Switzerland", 
+"Turkey", "United Kingdom"), class = "factor"), continent = structure(c(1L, 
+1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
+1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L), .Label = "Europe", class = "factor"), 
+    GDP_cap_max = c(5937.029526, 36126.4927, 33692.60508, 7446.298803, 
+    10680.79282, 14619.22272, 22833.30851, 35278.41874, 33207.0844, 
+    30470.0167, 32170.37442, 27538.41188, 18008.94444, 36180.78919, 
+    40675.99635, 28569.7197, 11732.51017, 36797.93332, 49357.19017, 
+    15389.92468, 20509.64777, 10808.47561, 15870.87851, 18678.31435, 
+    25768.25759, 28821.0637, 33859.74835, 37506.41907, 8458.276384, 
+    33203.26128)), .Names = c("country", "continent", "GDP_cap_max"
+), row.names = c(NA, -30L), class = c("tbl_df", "tbl", "data.frame"
+))
