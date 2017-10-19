@@ -243,7 +243,7 @@ You have 6 weeks of R Markdown and GitHub experience now. You’ve reviewed 4 pe
 
 Answer:
 
-
+1. The top-level table of content has been updated with a description of each homework.
 
 
 
@@ -255,6 +255,13 @@ Examples: Italy –> wine, Germany –> beer, Japan –> sake. (Austria, Germany
 
 Answer:
 
+I would like to use the example above to associate selected countries with a stereotypical food. Italy –> wine, Germany –> beer, Japan –> sake.
+
+```{r}
+data <- gapminder %>%
+        filter(country %in% c("Italy", "Germany", "Japan")) %>%
+        
+        #mutate(factor( labels = c("Italy", "Germany", "Japan")))
 
 
 
@@ -263,11 +270,7 @@ Answer:
 
 
 
-
-
-
-
-
+```
 
 
 
