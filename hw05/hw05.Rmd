@@ -316,14 +316,15 @@ data <- gapminder %>%
         mutate(food) %>%
         droplevels()
 
-# Factorize the new column and display the table
+# Factorize the new column
 data$food <- as.factor(data$food)
-data$food %>% fct_relevel("beer", "wine") %>% levels()
-kable(data)
 
-# Check the result
-data$country %>% levels()
-data$food %>% levels()
+# Re-order the factor and chech the result
+data$food %>% fct_relevel("beer", "wine") %>% levels()
+str(data$country)
+
+# Display the table
+kable(data)
 ```
 
 
