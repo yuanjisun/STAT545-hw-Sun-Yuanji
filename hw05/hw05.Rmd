@@ -254,6 +254,14 @@ Explicit provision of the plot object `p` via `ggsave(..., plot = p)`. Show a si
 
 Answer:
 
+It is important to specify which figure to save if there are many figures in the codes above. Let's see which figure will be saved if I do not specify `p` in `ggsave()`. Let's embed it into the report. It is obvious that the default figure that is exported is the most recent one. In my case, it is Figure 8.
+
+```{r}
+ggsave("Figure.png", width = 10, height = 10, dpi = 450)
+```
+
+![Here is Figure](Figure.png)
+
 I would like to save Figure 6 in the previous question. The figure is saved to both PDF and PNG format. The size and resolution are also specified.
 ```{r}
 # Vector form
