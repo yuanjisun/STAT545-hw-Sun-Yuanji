@@ -26,6 +26,10 @@ library(tidyverse)
     ## Loading tidyverse: purrr
     ## Loading tidyverse: dplyr
 
+    ## Warning: package 'tidyr' was built under R version 3.4.2
+
+    ## Warning: package 'dplyr' was built under R version 3.4.2
+
     ## Conflicts with tidy packages ----------------------------------------------
 
     ## filter(): dplyr, stats
