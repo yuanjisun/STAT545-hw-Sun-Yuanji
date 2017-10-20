@@ -1,11 +1,9 @@
-# STAT 545A Homework Repo
-This repo is for all STAT 545A homework.
+# Homework 1
 
-## Homework 02
-Homework 02 is stored in the folder hw02. [Here is the link to that folder](https://github.com/yuanjisun/STAT545-hw-Sun-Yuanji/tree/master/hw02)
-
-There is brief introduction to this homework in the README file in that folder.
-
+There are three files in this homework.
+[Link to README file](https://github.com/yuanjisun/STAT545-hw-Sun-Yuanji/blob/master/hw01/README.md)
+[Link to MD file](https://github.com/yuanjisun/STAT545-hw-Sun-Yuanji/blob/master/hw01/hw01_gapminder.md)
+[Link to RMD file](https://github.com/yuanjisun/STAT545-hw-Sun-Yuanji/blob/master/hw01/hw01_gapminder.Rmd)
 
 # _Yuanji_'s Homework 1 for **STAT 545A**
 
