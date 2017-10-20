@@ -5,12 +5,21 @@ date: "October 16, 2017"
 output: github_document
 ---
 # Report process
+1. Problems I ran into
 
+    - Drop factor level. I tried to pipe gapminder into `droplevels()` but failed. But I realized that this problem can be solved in 2 ways (see below).
+    - I tried to use `write_csv()` to export table into a PDF. Obviously, this is wrong since the function is call "csv", not PDF. I also tried to export to .xlsx using `dput()`. The file can be found but it is broken. If the file is exported in .xls form, it can be opened. I don't know why.
+    - I had trouble in adding picture into the MD file. This is because when using `![Alt text](/path/to/img.png)` I did not remove "path" when the figure is in the same subfolder as the RMD/MD file.
+    - I finished the "want to do more" question. However, I solved it in a stupid way. Look forward to getting new ways to solve it.
+    
+2. Useful resources
+    - R for Data Science
+    - Lecture notes
+    - R documentation online
 
+3. Conclusion
 
-
-
-
+This homework is not difficult after I reviewed all lecture notes. I applied what I learted in class to this homework. Look forward to improve my skills in STAT 547M.
 
 
 # Factor management
@@ -32,6 +41,7 @@ library(RColorBrewer)
 library(readxl)
 library(forcats)
 library(gridExtra)
+library(knitr)
 ```
 
 ## Gapminder version
@@ -74,7 +84,7 @@ str(a2$continent)
 str(a2$country)
 ```
 
-By comaring the results above, we can see that the factor levels of `continent` and `country` are influenced by the removal of Oceania. The number of rows are also changed of course.
+By comaring the results above, we can see that the factor levels of `continent` and `country` are influenced by the removal of Oceania and `droplevels`. If `deoplevels` is not used, the factor level will not change. The number of rows are also changed of course.
 
 __Reorder the levels of `country` or `continent`.__ Use the forcats package to change the order of the factor levels, based on a principled summary of one of the quantitative variables. Consider experimenting with a summary statistic beyond the most basic choice of the median.
 
@@ -104,9 +114,12 @@ These explorations should involve the data, the factor levels, and some figures.
 
 Answer:
 
-First, let me explore whether `arrange()` has any influence on a figure. I would like to see the GDP/cap of each country in `Americas` in 1997. In Figure 1, I used `arrange(desc(gdpPercap))` to see if it worked. In Figure 2, I re-ordered `country` by `gdpPercap`.
+First, let me explore whether `arrange()` has any influence on a figure with/withoout re-ordering factors. I would like to see the GDP/cap of each country in `Americas` in 1997. In Figure 1, I used `arrange(desc(gdpPercap))` to see if it worked. In Figure 2, I re-ordered `country` by `gdpPercap`.
 
 By comparing the figure, it is obvious that `arrange()` does not change the figure at all. In Figure 1, although `arrange(desc(gdpPercap))` is used, the points are still distributed randomly instead of in the decreasing order.
+
+I think `arrange()` will only influence a plot when `geom_path()` is used. This is because `arrange()` changes the order of rows and `geom_path()` connects points together in the original order. If the order of points changes, the figure will change too. Otherwise, all items will be plotted in the alphabetical order, by default, just like this example.
+
 ```{r}
 # Generate the data
 gap_america_1997 <- gapminder %>%
@@ -128,7 +141,9 @@ gap_america_1997 %>%
 
 Second, let me explore the effects of reordering a factor and factor reordering coupled with `arrange()`. I would like to copy the Figure 2 above (called Figure 3 below) and compare it with another figure with `arrange()`. Since the factor is already re-ordered in decend order, I arrange `gdpPercap` in an increasing order to see the change.
 
-According to the figures below, `arrange()` does not work. It did not change the figure at all.
+According to the figures below, `arrange()` does not work. It did not change the figure at all. The reason is the same as above.
+
+As is discussed above, `arrange()` will only influence a plot when `geom_path()` is used.
 ```{r}
 # Figure 3: Re-order factor without arrange()
 gap_america_1997 %>%
@@ -225,11 +240,15 @@ Answer:
 I would like to save Figure 5 in the previous question. The figure is saved to both PDF and PNG format. The size and resolution are also specified.
 ```{r}
 # Vector form
-ggsave("Figure 5.pdf", f5, width = 10, height = 10, dpi = 1200)
+ggsave("Figure 5.pdf", plot = f5, width = 10, height = 10, dpi = 450)
 
 # Raster form
-ggsave("Figure 5.png", f5, width = 10, height = 10, dpi = 1200)
+ggsave("Figure_5.png", plot = f5, width = 10, height = 10, dpi = 450)
 ```
+
+Load and embed `Figure 5.png` in my report.
+
+![Here is Figure 5](Figure_5.png)
 
 # Clean up your repo!
 You have 6 weeks of R Markdown and GitHub experience now. You’ve reviewed 4 peer assignments. Surely there are aspects of your current repo organization that could be better. Deal with that. Ideas:
@@ -257,25 +276,27 @@ Answer:
 
 I would like to use the example above to associate selected countries with a stereotypical food. Italy –> wine, Germany –> beer, Japan –> sake.
 
+I solved this question in a stupid way but it worked! First, I create a vector containing all food (repeat 12 times each). Since the country is in the alphabetical order, I put three food names according to the order of countries. Second, I added the new column into the seleceted data and drop unused level. Finally, I converted the the new column into a factor. Since the food level is in alphabetical order, I re-ordered them. By checking the result, we can see that Germany is with beer, Italy is with wine and Japan is with sake.
+
 ```{r}
+# Create a new column called food
+food <- c(rep("beer", 12), rep("wine", 12), rep("sake", 12))
+
+# Add the new column to the data and remove unused factor level
 data <- gapminder %>%
         filter(country %in% c("Italy", "Germany", "Japan")) %>%
-        
-        #mutate(factor( labels = c("Italy", "Germany", "Japan")))
+        mutate(food) %>%
+        droplevels()
 
+# Factorize the new column and display the table
+data$food <- as.factor(data$food)
+data$food %>% fct_relevel("beer", "wine") %>% levels()
+kable(data)
 
-
-
-
-
-
-
+# Check the result
+data$country %>% levels()
+data$food %>% levels()
 ```
 
 
-
-
-
 [This is the end of Homework 5.]
-
-
