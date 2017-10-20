@@ -1,4 +1,4 @@
-# README: hw02
+# README: Homework 02: Explore `gapminder` and use `dplyr`
 
 Homework 2 explores Gapminder and uses dplyr. Several figure types are tried and some questions are solved in various ways, which enhances my understanding of R programming. I went through many materials and tried many new things which were not covered in lectures yet.
 

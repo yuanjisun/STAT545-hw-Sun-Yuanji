@@ -1,4 +1,4 @@
-# README: hw03
+# README: Homework 03: Use `dplyr` and `ggplot` to manipulate and explore data
 
 Homework 3 explores Gapminder and uses dplyr and ggplot2. The goal is to manipulate and explore a dataset with the dplyr package, complemented by visualizations made with ggplot2.
 

@@ -1,4 +1,4 @@
-# Homework 1
+# README: Homework 01: Edit README.md and Use R Markdown
 
 There are three files in this homework.
 

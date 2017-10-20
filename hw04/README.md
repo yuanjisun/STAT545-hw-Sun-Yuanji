@@ -1,4 +1,4 @@
-# README: hw04
+# README: Homework 04: Tidy data and joins
 
 This is the folder for STAT 545A Homework 4, which includes two files, RMD and MD.
 

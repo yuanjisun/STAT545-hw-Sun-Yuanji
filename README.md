@@ -15,4 +15,3 @@ Homework 04 is stored in the folder hw04. [Here is the link to that folder.](htt
 
 ## Homework 05: Factor and figure management; Repo hygiene
 Homework 05 is stored in the folder hw05. [Here is the link to that folder.](https://github.com/yuanjisun/STAT545-hw-Sun-Yuanji/tree/master/hw05)
-

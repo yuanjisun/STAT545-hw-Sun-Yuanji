@@ -1,4 +1,4 @@
-# README: hw05
+# README: Homework 05: Factor and figure management; Repo hygiene
 
 This is the folder for STAT 545A Homework 5, which includes several files.
 
