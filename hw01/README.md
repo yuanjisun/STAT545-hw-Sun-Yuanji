@@ -1,9 +1,14 @@
 # Homework 1
 
 There are three files in this homework.
+
 [Link to README file](https://github.com/yuanjisun/STAT545-hw-Sun-Yuanji/blob/master/hw01/README.md)
+
 [Link to MD file](https://github.com/yuanjisun/STAT545-hw-Sun-Yuanji/blob/master/hw01/hw01_gapminder.md)
+
 [Link to RMD file](https://github.com/yuanjisun/STAT545-hw-Sun-Yuanji/blob/master/hw01/hw01_gapminder.Rmd)
+
+
 
 # _Yuanji_'s Homework 1 for **STAT 545A**
 
